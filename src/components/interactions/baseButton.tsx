@@ -15,28 +15,17 @@ const BaseButton = ({ color, onClick, children }: Props) => {
     case 1:
       colorClass = "bg-green-1 text-white";
       break;
+    case 2:
+      colorClass = "bg-gray-1 text-black";
+      break;
     default:
       colorClass = "bg-white text-black";
       break;
   }
-  const [hover, setHover] = useState(false);
-  const onHover = () => {
-    setHover(true);
-  };
-
-  const onLeave = () => {
-    setHover(false);
-  };
   return (
     <button
-      className={
-        colorClass +
-        " rounded-lg px-6 py-4 font-medium shadow-md transition-all" +
-        (hover ? " shadow-xl transition-all  duration-300" : "")
-      }
+      className={colorClass + " animated-base rounded-lg px-6 py-4 font-medium"}
       onMouseDown={onClick}
-      onMouseEnter={onHover}
-      onMouseLeave={onLeave}
     >
       {children}
     </button>

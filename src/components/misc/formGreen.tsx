@@ -12,7 +12,7 @@ const FormGreen = ({ children, title, extraClass }: Props) => {
   return (
     <div
       className={
-        "mx-auto rounded-lg bg-green-1 text-white shadow-md transition-all " +
+        "animated-inactive mx-auto rounded-lg bg-green-1 text-white " +
         extraClass
       }
     >

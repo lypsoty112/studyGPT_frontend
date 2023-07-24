@@ -13,7 +13,7 @@ const TextContainer = ({ children, widthClass, title }: Props) => {
     <div
       className={
         widthClass +
-        " mx-auto rounded-lg bg-white-1 text-black shadow-md transition-all "
+        " animated-inactive mx-auto rounded-lg bg-white-1 text-black "
       }
     >
       <div className="px-12 py-8">

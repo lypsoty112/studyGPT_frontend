@@ -5,11 +5,20 @@ import React from "react";
 type Props = {
   children?: React.ReactNode;
   title: string;
+  width?: string;
 };
 
-const FormGrey = ({ children, title }: Props) => {
+const FormGrey = ({ children, title, width }: Props) => {
+  // Check if the width is defined
+  if (!width) {
+    width = "xs:w-full sm:w-9/12 md:w-5/12";
+  }
   return (
-    <div className=" mx-auto rounded-lg bg-white-1 text-black shadow-md transition-all xs:w-full sm:w-9/12 md:w-5/12">
+    <div
+      className={
+        "animated-inactive mx-auto rounded-lg bg-white-1 text-black " + width
+      }
+    >
       <div className="px-12 py-8">
         <ContainerTitle title={title} />
         <div>{children}</div>

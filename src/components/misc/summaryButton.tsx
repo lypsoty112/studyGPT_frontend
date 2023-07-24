@@ -22,10 +22,7 @@ const SummaryButton: React.FC<Props> = ({
         onClick={onClick}
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
-        className={
-          "relative mx-auto w-10/12 cursor-pointer rounded bg-gray-1 transition-all duration-200 " +
-          (hover ? "shadow-xl" : "shadow-md")
-        }
+        className="animated-base relative mx-auto w-10/12 cursor-pointer rounded bg-gray-1 "
         title={description}
       >
         <div className="px-2 pt-2">

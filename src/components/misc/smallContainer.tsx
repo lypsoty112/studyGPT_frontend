@@ -10,7 +10,9 @@ type Props = {
 const SmallContainer = ({ children, title, extraClass }: Props) => {
   return (
     <div
-      className={"rounded-md bg-white text-black shadow-md " + extraClass}
+      className={
+        "animated-inactive rounded-md bg-white text-black " + extraClass
+      }
       title={title}
     >
       <div className="p-2">

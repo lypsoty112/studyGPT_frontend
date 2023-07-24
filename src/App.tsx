@@ -6,6 +6,8 @@ import SignupPage from "./pages/signupPage";
 import HomePage from "./pages/homePage";
 import NewPage from "./pages/newPage";
 import SummaryPage from "./pages/summaryPage";
+import AccountPage from "./pages/accountPage";
+import SubscriptionsPage from "./pages/subscriptionsPage";
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
         <Route path="/home" element={<HomePage />} />
         <Route path="/new" element={<NewPage />} />
         <Route path="/summary" element={<SummaryPage />} />
+        <Route path="/account" element={<AccountPage />} />
+        <Route path="/subscriptions" element={<SubscriptionsPage />} />
       </Routes>
     </BrowserRouter>
   );

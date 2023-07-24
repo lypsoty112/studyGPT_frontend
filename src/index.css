@@ -7,5 +7,40 @@ html {
   font-family: "IBM Plex Sans", sans-serif;
   @apply text-white-1;
   @apply bg-gradient-green-white;
+  @apply transition-all;
+  @apply duration-200;
+}
+
+.animated-base {
+  @apply transition-all;
+  @apply duration-300;
+  @apply ease-in-out;
+  @apply cursor-pointer;
+  @apply outline-none;
+  @apply shadow-xl;
+}
+.animated-base:hover {
+  @apply -translate-y-[1px] translate-x-[1px] transform;
+  @apply shadow-2xl;
+}
+.animated-base:active {
+  @apply transform;
+  @apply scale-95;
+  @apply shadow-lg;
+}
+.animated-base:focus {
+  @apply outline-none;
+}
+
+.animated-inactive {
+  @apply transition-all;
+  @apply duration-300;
+  @apply ease-in-out;
+  @apply outline-none;
+  @apply shadow-xl;
+}
+
+.animated-inactive:hover {
+  @apply shadow-2xl;
 }
 @tailwind utilities;

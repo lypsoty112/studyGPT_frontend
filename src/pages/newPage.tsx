@@ -4,8 +4,10 @@ import BigContainer from "@/components/pageLayout/bigContainer";
 import DragAndDropUploadZone from "@/components/interactions/dragAndDropUploadZone";
 import FormGreen from "@/components/misc/formGreen";
 import BaseButton from "@/components/interactions/baseButton";
+import { useNavigate } from "react-router-dom";
 
 const NewPage = () => {
+  const navigate = useNavigate();
   return (
     <MainContainer>
       {/*Navbar*/}
@@ -19,10 +21,7 @@ const NewPage = () => {
           <div className="float-right h-full w-2/3 p-3">
             <FormGreen title="Information" extraClass="">
               <div className="w-full">
-                <BaseButton
-                  color={0}
-                  onClick={() => console.log("To open summary")}
-                >
+                <BaseButton color={0} onClick={() => navigate("/summary")}>
                   New summary
                 </BaseButton>
               </div>
