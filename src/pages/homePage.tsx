@@ -16,7 +16,9 @@ const HomePage = () => {
         <div className="h-full bg-white">
           {/*Title*/}
           <div className="flex w-full items-center overflow-y-auto overflow-x-hidden border-b-2 border-black pb-3 pr-3">
-            <h1 className="flex-grow text-3xl font-bold">My summaries</h1>
+            <div className="hidden w-full flex-grow text-3xl font-bold xs:block">
+              My summaries
+            </div>
             <BaseButton color={1} onClick={() => navigate("/new")}>
               New summary
             </BaseButton>

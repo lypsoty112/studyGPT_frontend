@@ -78,7 +78,7 @@ You can display code snippets in-line or in blocks.
         <Navbar />
         {/*Content*/}
         <PageContent>
-          <div className="float-left h-full w-3/12 p-3">
+          <div className="float-left hidden h-full w-3/12 p-3 sm:block">
             <SmallContainer title="Summary" extraClass="mb-5">
               test
             </SmallContainer>
@@ -89,7 +89,7 @@ You can display code snippets in-line or in blocks.
               Maecenas in.
             </SmallContainer>
           </div>
-          <div className="float-right h-full w-9/12 p-3 pb-0">
+          <div className="float-right h-full w-full p-0 pb-0 sm:w-9/12 sm:p-3">
             <div
               className={
                 "animated-inactive h-full w-full flex-col rounded-md bg-white text-black " +
@@ -97,7 +97,11 @@ You can display code snippets in-line or in blocks.
               }
             >
               <div className="flex w-full items-center rounded-md p-3">
-                <div className="flex-grow"></div>
+                <div className="flex-grow">
+                  <span className=" block text-xl font-medium sm:hidden">
+                    Summary
+                  </span>
+                </div>
                 <div className="flex items-center">
                   <BsFullscreen
                     className="cursor-pointer"
@@ -116,11 +120,11 @@ You can display code snippets in-line or in blocks.
       </MainContainer>
       <div
         className={
-          "bottom-0 left-0 z-10 h-screen w-screen overflow-y-auto bg-black bg-opacity-20 p-5 " +
+          "bottom-0 left-0 z-10 h-screen w-screen overflow-y-auto bg-black bg-opacity-20 p-1 sm:p-5 " +
           (display ? "absolute" : "hidden")
         }
       >
-        <div className="animated-inactive mx-auto flex w-10/12 flex-col rounded-md bg-white p-3 text-black opacity-100 ">
+        <div className="animated-inactive mx-auto flex w-full flex-col rounded-md bg-white p-3 text-black opacity-100 sm:w-10/12 ">
           <div className="flex w-full items-center rounded-md">
             <div className="flex-grow"></div>
             <div className="flex items-center">

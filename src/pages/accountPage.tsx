@@ -16,14 +16,14 @@ const AccountPage = () => {
       <Navbar />
       {/*Content*/}
       <PageContent>
-        <div className=" float-left h-full w-3/5 p-4">
+        <div className=" float-left w-full p-4 sm:w-3/5">
           <FormGrey title="Account" width="w-full">
             <Input title="E-mail" />
             <Input title="Registered since" />
             <Input title="Last login" />
             <Input title="Current subscription" />
-            <div className="flex w-full flex-row ">
-              <div className="flex">
+            <div className="flex w-full flex-col md:flex-row">
+              <div className="mb-4 flex w-full md:mb-0 md:w-auto">
                 <BaseButton
                   color={1}
                   onClick={() => navigate("/subscriptions")}
@@ -31,13 +31,13 @@ const AccountPage = () => {
                   Join another subscription plan
                 </BaseButton>
               </div>
-              <div className="flex flex-grow justify-end">
-                <div className="mx-4">
+              <div className="flex flex-grow md:justify-end">
+                <div className="mx-2 mb-4 md:mx-4 md:mb-0">
                   <BaseButton color={1} onClick={() => console.log("clicked")}>
                     Change password
                   </BaseButton>
                 </div>
-                <div className="ml-4">
+                <div className="ml-2 md:ml-4">
                   <BaseButton color={1} onClick={() => console.log("clicked")}>
                     Edit
                   </BaseButton>
@@ -46,7 +46,7 @@ const AccountPage = () => {
             </div>
           </FormGrey>
         </div>
-        <div className=" float-right h-full max-h-fit w-2/5 overflow-auto p-4">
+        <div className=" max-h-fit w-full overflow-auto p-4 sm:float-right sm:w-2/5">
           <FormGrey title="Payments" width="w-full">
             {
               // Map payments here

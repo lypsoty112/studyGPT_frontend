@@ -37,7 +37,7 @@ const SubscriptionBox = ({
     );
   }
   return (
-    <div className="w-1/3 p-2">
+    <div className="w-full p-2 sm:w-1/3">
       <FormGrey title={title} width="w-full">
         <div className="hidden">{id}</div>
         <div className="h-40 w-full border-b border-black-1 px-3 pb-6">
@@ -59,7 +59,7 @@ const SubscriptionsPage = () => {
       <Navbar />
       {/*Content*/}
       <PageContent>
-        <div className="flex h-full w-full flex-row justify-center">
+        <div className="flex h-full w-full flex-col sm:flex-row sm:justify-center">
           <SubscriptionBox
             id={1}
             title="Free"

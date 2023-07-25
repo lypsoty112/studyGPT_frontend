@@ -17,7 +17,7 @@ const SummaryButton: React.FC<Props> = ({
   const [hover, setHover] = useState(false);
 
   return (
-    <div className="relative my-4 w-1/5">
+    <div className="relative my-4 w-full sm:w-1/2 md:w-1/5">
       <div
         onClick={onClick}
         onMouseEnter={() => setHover(true)}

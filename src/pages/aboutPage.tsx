@@ -11,7 +11,7 @@ const AboutPage = () => {
       <Navbar />
       {/*Content*/}
       <PageContent>
-        <TextContainer title="About" widthClass="w-10/12">
+        <TextContainer title="About" widthClass="xs:w-10/12 w-full">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime
           mollitia, molestiae quas vel sint commodi repudiandae consequuntur
           voluptatum laborum numquam blanditiis harum quisquam eius sed odit
