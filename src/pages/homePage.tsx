@@ -4,9 +4,23 @@ import BigContainer from "@/components/pageLayout/bigContainer";
 import MainContainer from "@/components/pageLayout/mainContainer";
 import Navbar from "@/components/pageLayout/navbar";
 import { useNavigate } from "react-router-dom";
+import { getHealth } from "@/api/health";
+import { useEffect } from "react";
 
 const HomePage = () => {
   const navigate = useNavigate();
+
+  const checkApi = async () => {
+    const response = await getHealth();
+    // Console log the current date, time & milliseconds
+    const date = new Date();
+    console.log(date.toLocaleString());
+    console.log(response);
+  };
+
+  useEffect(() => {
+    checkApi();
+  }, []);
 
   return (
     <MainContainer>

@@ -6,14 +6,20 @@ interface MyAuth0ProviderProps {
 }
 
 function MyAuth0Provider({ children }: MyAuth0ProviderProps) {
-  const domain = import.meta.env.REACT_APP_AUTH0_DOMAIN;
-  const clientId = import.meta.env.REACT_APP_AUTH0_CLIENT_ID;
+  const domain = import.meta.env.VITE_APP_AUTH_DOMAIN;
+  const clientId = import.meta.env.VITE_APP_AUTH_CLIENT_ID;
+  const audience = import.meta.env.VITE_APP_AUTH_AUDIENCE;
 
   return (
     <Auth0Provider
       domain={domain}
       clientId={clientId}
       cacheLocation="localstorage"
+      authorizationParams={{
+        redirect_uri: window.location.origin,
+        audience: audience,
+      }}
+      useRefreshTokens={true}
     >
       {children}
     </Auth0Provider>

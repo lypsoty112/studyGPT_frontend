@@ -8,22 +8,23 @@ import NewPage from "./pages/newPage";
 import SummaryPage from "./pages/summaryPage";
 import AccountPage from "./pages/accountPage";
 import SubscriptionsPage from "./pages/subscriptionsPage";
+import MyAuth0Provider from "./api/AuthProvider";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignupPage />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/home" element={<HomePage />} />
-        <Route path="/new" element={<NewPage />} />
-        <Route path="/summary" element={<SummaryPage />} />
-        <Route path="/account" element={<AccountPage />} />
-        <Route path="/subscriptions" element={<SubscriptionsPage />} />
-      </Routes>
-    </BrowserRouter>
+    <MyAuth0Provider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/home" element={<HomePage />} />
+          <Route path="/new" element={<NewPage />} />
+          <Route path="/summary" element={<SummaryPage />} />
+          <Route path="/account" element={<AccountPage />} />
+          <Route path="/subscriptions" element={<SubscriptionsPage />} />
+        </Routes>
+      </BrowserRouter>
+    </MyAuth0Provider>
   );
 }
 

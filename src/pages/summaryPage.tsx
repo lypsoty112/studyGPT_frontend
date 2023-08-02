@@ -106,6 +106,7 @@ You can display code snippets in-line or in blocks.
                   <BsFullscreen
                     className="cursor-pointer"
                     onClick={() => setDisplay(true)}
+                    title="Fullscreen"
                   />
                 </div>
               </div>

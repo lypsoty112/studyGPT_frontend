@@ -5,17 +5,21 @@ import PageContent from "@/components/pageLayout/pageContent";
 import AttentionDiv from "@/components/misc/attentionDiv";
 import BaseButton from "@/components/interactions/baseButton";
 import { useNavigate } from "react-router-dom";
-import { getHealth } from "@/api/health";
+import { useAuth0 } from "@auth0/auth0-react";
+import { useCallback } from "react";
 
 const LandingPage = () => {
   const navigate = useNavigate();
 
-  const getHealthData = async () => {
-    const data = await getHealth();
-    console.log(data);
-  };
+  const { loginWithRedirect, isAuthenticated } = useAuth0();
 
-  getHealthData();
+  const handleLogin = useCallback(async () => {
+    loginWithRedirect();
+  }, [loginWithRedirect]);
+
+  if (isAuthenticated) {
+    navigate("/home");
+  }
 
   return (
     <MainContainer>
@@ -27,7 +31,7 @@ const LandingPage = () => {
           <AttentionDiv>The ultimate summary creator</AttentionDiv>
           <AttentionDiv>Leverage A.I. to work faster & smarter</AttentionDiv>
         </div>
-        <BaseButton color={0} onClick={() => navigate("/signup")}>
+        <BaseButton color={0} onClick={handleLogin}>
           Start now
         </BaseButton>
       </PageContent>
