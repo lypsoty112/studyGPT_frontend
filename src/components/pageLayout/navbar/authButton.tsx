@@ -1,37 +1,28 @@
-import { useAuth0 } from "@auth0/auth0-react";
-import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import NavButton from "./NavButton";
 
 const LoginButton = () => {
-  const { isAuthenticated, loginWithRedirect } = useAuth0();
   const navigate = useNavigate();
 
-  const handleLogin = useCallback(async () => {
-    loginWithRedirect();
-  }, [loginWithRedirect]);
-  if (!isAuthenticated) {
-    return <NavButton displayText="Log In" onClick={handleLogin}></NavButton>;
-  }
   return (
     <NavButton
-      displayText="Account"
-      onClick={() => navigate("/account")}
+      displayText="Log In"
+      onClick={() => navigate("/login")}
     ></NavButton>
   );
 };
 
 const LogoutButton = () => {
-  const { isAuthenticated, logout } = useAuth0();
+  const navigate = useNavigate();
 
-  const handleLogout = () => {
-    logout({ logoutParams: { returnTo: window.location.origin } });
-  };
-
-  if (isAuthenticated) {
-    return <NavButton displayText="Log Out" onClick={handleLogout}></NavButton>;
-  }
-  return <LoginButton></LoginButton>;
+  return (
+    <NavButton
+      displayText="Log Out"
+      onClick={() => {
+        navigate("/");
+      }}
+    ></NavButton>
+  );
 };
 
 const AuthButton = () => {

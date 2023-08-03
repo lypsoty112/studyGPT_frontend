@@ -2,18 +2,12 @@ import logo from "../../../assets/Logo white.png";
 import NavButton from "./NavButton";
 import AuthButton from "./authButton";
 import { useNavigate } from "react-router-dom";
-import { useAuth0 } from "@auth0/auth0-react";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth0();
 
   const handleLogoClick = () => {
-    if (isAuthenticated) {
-      navigate("/home");
-    } else {
-      navigate("/");
-    }
+    navigate("/home");
   };
 
   return (
