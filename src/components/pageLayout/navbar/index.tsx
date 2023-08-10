@@ -2,12 +2,13 @@ import logo from "../../../assets/Logo white.png";
 import NavButton from "./NavButton";
 import AuthButton from "./authButton";
 import { useNavigate } from "react-router-dom";
+import { loggedIn } from "@/components/auth/loginFunctions";
 
 const Navbar = () => {
   const navigate = useNavigate();
 
   const handleLogoClick = () => {
-    navigate("/home");
+    navigate(loggedIn() ? "/home" : "/");
   };
 
   return (

@@ -8,6 +8,7 @@ import AccountPage from "./pages/accountPage";
 import SubscriptionsPage from "./pages/subscriptionsPage";
 import LoginPage from "./pages/loginPage";
 import SignupPage from "./pages/signupPage";
+import { ProtectedRoute } from "./components/auth/protectedRoute";
 
 function App() {
   return (
@@ -15,13 +16,41 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/about" element={<AboutPage />} />
-        <Route path="/home" element={<HomePage />} />
-        <Route path="/new" element={<NewPage />} />
-        <Route path="/summary" element={<SummaryPage />} />
-        <Route path="/account" element={<AccountPage />} />
         <Route path="/subscriptions" element={<SubscriptionsPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
+        <Route
+          path="/home"
+          element={
+            <ProtectedRoute>
+              <HomePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/new"
+          element={
+            <ProtectedRoute>
+              <NewPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/summary"
+          element={
+            <ProtectedRoute>
+              <SummaryPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/account"
+          element={
+            <ProtectedRoute>
+              <AccountPage />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

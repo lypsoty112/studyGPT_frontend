@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ContainerWave from "./containerWave";
 
 type Props = {
   title: string;
   onClick: () => void;
-  date: string;
+  date: Date;
   description: string;
 };
 
@@ -15,6 +15,14 @@ const SummaryButton: React.FC<Props> = ({
   description,
 }) => {
   const [hover, setHover] = useState(false);
+  const formatDate = (date: Date) => {
+    const day = date.getDay();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    return `${day}/${month}/${year} ${hours}:${minutes}`;
+  };
 
   return (
     <div className="relative my-4 w-full sm:w-1/2 md:w-1/5">
@@ -27,7 +35,7 @@ const SummaryButton: React.FC<Props> = ({
       >
         <div className="px-2 pt-2">
           <div className="mb-7 text-lg font-medium">{title}</div>
-          <div className="text-xs italic">{date}</div>
+          <div className="text-xs italic">{formatDate(date)}</div>
         </div>
         <div
           className={

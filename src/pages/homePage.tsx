@@ -4,10 +4,33 @@ import BigContainer from "@/components/pageLayout/bigContainer";
 import MainContainer from "@/components/pageLayout/mainContainer";
 import Navbar from "@/components/pageLayout/navbar";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { getSummariesForHome } from "@/api/summary";
+import { useState } from "react";
 
 const HomePage = () => {
   const navigate = useNavigate();
+  const [summaries, setSummaries] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  // TODO: handle loading and error
 
+  useEffect(() => {
+    const fetchSummaries = async () => {
+      // Parse summaries
+      setLoading(true);
+      let response = await getSummariesForHome();
+      if (response.status !== 200) {
+        setError(true);
+        setErrorMessage(response.message);
+      } else {
+        setSummaries(response.data.data);
+      }
+      setLoading(false);
+    };
+    fetchSummaries();
+  }, []);
   return (
     <MainContainer>
       {/*Navbar*/}
@@ -26,15 +49,23 @@ const HomePage = () => {
           </div>
           {/*Summaries*/}
           <div className="mt-5 flex flex-wrap bg-white">
-            {Array.from({ length: 80 }, (_, index) => (
-              <SummaryButton
-                key={index}
-                title={index.toString()}
-                date="XX/XX/XXXX"
-                description="fdsqfdqsdqsFSQ FDSQJFD SQMFDJ QKMFD SJKQMF JDSQKMS DQMF DSLKQMJFIEAZIMFJDIMQVJ IMSQFJDQSM FDJIQMCS LQKMFJDSKLQMFJDSIMQ JFIDSQM JFDQSIM"
-                onClick={() => navigate("/summary")}
-              />
-            ))}
+            {summaries.length > 0 ? (
+              summaries.map(
+                ({ summary_id, title, description, date_created }, index) => {
+                  return (
+                    <SummaryButton
+                      key={index}
+                      date={new Date(date_created)}
+                      title={title}
+                      description={description}
+                      onClick={() => navigate(`/summary/${summary_id}`)}
+                    />
+                  );
+                }
+              )
+            ) : (
+              <div className="w-full text-center">No summaries found</div>
+            )}
           </div>
         </div>
       </BigContainer>

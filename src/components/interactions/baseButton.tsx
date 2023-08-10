@@ -6,9 +6,10 @@ type Props = {
   onClick: () => void;
   /*----------------------------------------*/
   children: React.ReactNode;
+  args?: any;
 };
 
-const BaseButton = ({ color, onClick, children }: Props) => {
+const BaseButton = ({ color, onClick, children, args }: Props) => {
   // Create a color based on a switch statement
   let colorClass = "";
   switch (color) {
@@ -26,6 +27,7 @@ const BaseButton = ({ color, onClick, children }: Props) => {
     <button
       className={colorClass + " animated-base rounded-lg px-6 py-4 font-medium"}
       onMouseDown={onClick}
+      {...args}
     >
       {children}
     </button>

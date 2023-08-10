@@ -11,6 +11,9 @@ html {
   @apply duration-200;
 }
 
+/*-----------------------------------------*/
+/* Animation */
+/*-----------------------------------------*/
 .animated-base {
   @apply transition-all;
   @apply duration-300;
@@ -42,5 +45,26 @@ html {
 
 .animated-inactive:hover {
   @apply shadow-2xl;
+}
+
+/*-----------------------------------------*/
+/* Inputs */
+/*-----------------------------------------*/
+.inputWrapper {
+  @apply mb-4;
+}
+
+.inputWrapper > span {
+  @apply w-full;
+  @apply font-medium;
+}
+
+.inputWrapper > input {
+  @apply w-full;
+  @apply rounded-lg;
+  @apply border;
+  @apply border-gray-1;
+  @apply px-3;
+  @apply py-1;
 }
 @tailwind utilities;
