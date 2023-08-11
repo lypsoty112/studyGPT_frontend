@@ -92,7 +92,30 @@ const login = async (email: string, password: string) => {
   return { status: 200, message: "Success" };
 };
 
+const checkPassword = async (password: string) => {
+  // Returns: { status: number, message: string }
+  const inputs = {
+    password: password.trim(),
+  };
+  let response;
+  // Check for empty fields
+  if (!inputs.password)
+    return { status: 400, message: "Please enter a password." };
+
+  // Perform the request
+  try {
+    response = await apiRequest("POST", `${BASE}/checkPassword`, inputs, true);
+    // This returns a boolean
+  } catch (error: any) {
+    return {
+      status: error.response.status,
+      message: error.response.data.message,
+    };
+  }
+  return { status: 200, message: "Success", data: response.data };
+};
+
 const getUserInformation = async () => {
   return await apiRequest("GET", `${BASE}/me`, {}, true);
 };
-export { register, login, getUserInformation };
+export { register, login, getUserInformation, checkPassword };

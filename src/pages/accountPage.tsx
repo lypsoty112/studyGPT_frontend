@@ -3,13 +3,14 @@ import Navbar from "@/components/pageLayout/navbar";
 import PageContent from "@/components/pageLayout/pageContent";
 import Footer from "@/components/pageLayout/footer";
 import FormGrey from "@/components/misc/formGrey";
-import Input from "@/components/interactions/input";
 import BaseButton from "@/components/interactions/baseButton";
 import PaymentContainer from "@/components/misc/paymentContainer";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { getUserInformation } from "@/api/user";
 import { useEffect } from "react";
+import { getUserPayments } from "@/api/payment";
+import PopupContainer from "@/components/pageLayout/popupContainer";
 
 const AccountPage = () => {
   const navigate = useNavigate();
@@ -18,6 +19,8 @@ const AccountPage = () => {
   const [registeredSince, setRegisteredSince] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [newPasswordConfirm, setNewPasswordConfirm] = useState("");
+  const [payments, setPayments] = useState<any[]>([]);
+  const [locked, setLocked] = useState(false);
 
   const formatDate = (date: Date) => {
     const day = date.getDay();
@@ -32,13 +35,24 @@ const AccountPage = () => {
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  // TODO: Get the user's account information from the API
+  const setPaymentsInfo = async () => {
+    const response = await getUserPayments();
+    if (response.status === 200) {
+      console.log(response.data);
+      setPayments(response.data);
+    } else {
+      // Set the error message
+      setErrorMessage(response.message);
+      // Set the error state
+      setError(true);
+    }
+  };
+
   const setUserInfo = async () => {
     const response = await getUserInformation();
     // Check if the response is valid
     if (response.status === 200) {
       const data = response.data;
-      console.log(data);
       // Set the user's information
       setEmail(data.email);
       setCurrentSubscription(data.subscription.title);
@@ -54,22 +68,30 @@ const AccountPage = () => {
 
   useEffect(() => {
     setUserInfo();
+    setPaymentsInfo();
   }, []);
+
+  useEffect(() => {
+    if (!error) return;
+    console.log(errorMessage);
+    setError(false);
+    setErrorMessage("");
+  }, [error]);
 
   // ------------------ Functions ------------------
   // On change email
   const onChangeEmail = (e: any) => {
-    setEmail(e.target.value);
+    setEmail(locked ? email : e.target.value);
   };
 
   // On change new password
   const onChangeNewPassword = (e: any) => {
-    setNewPassword(e.target.value);
+    setNewPassword(locked ? newPassword : e.target.value);
   };
 
   // On change new password confirm
   const onChangeNewPasswordConfirm = (e: any) => {
-    setNewPasswordConfirm(e.target.value);
+    setNewPasswordConfirm(locked ? newPasswordConfirm : e.target.value);
   };
 
   // Focus on the next input on enter
@@ -94,103 +116,140 @@ const AccountPage = () => {
   };
   // On click save
   const handleSave = () => {
-    // TODO: Save the user's information
-    console.log("Save");
+    // Check if the values are valid
+    setEmail(email.trim());
+    setNewPassword(newPassword.trim());
+    setNewPasswordConfirm(newPasswordConfirm.trim());
+    if (email === "") {
+      // Set the error message
+      setErrorMessage("Please enter an email");
+      // Set the error state
+      setError(true);
+      return;
+    }
+
+    if (newPassword === "" || newPasswordConfirm === "") {
+      // Set the error message
+      setErrorMessage("Please enter a password");
+      // Set the error state
+      setError(true);
+      return;
+    }
+
+    if (newPassword !== newPasswordConfirm) {
+      // Set the error message
+      setErrorMessage("Passwords do not match");
+      // Set the error state
+      setError(true);
+      return;
+    }
+
+    // TODO: Save the changes
+    setLocked(true);
+    // Call the password confirm
   };
 
   // TODO: Add the payments
 
   return (
-    <MainContainer>
-      {/*Navbar*/}
-      <Navbar />
-      {/*Content*/}
-      <PageContent>
-        <div className=" float-left w-full p-4 sm:w-3/5">
-          <FormGrey title="Account" width="w-full">
-            {/*Inputs */}
-            <div className="inputWrapper">
-              <span>E-mail</span>
-              <input
-                value={email}
-                id="email"
-                onChange={onChangeEmail}
-                onKeyDown={focusOnEnter}
-              />
-            </div>
-            <div className="inputWrapper">
-              <span>New password</span>
-              <input
-                value={newPassword}
-                id="newPassword"
-                onChange={onChangeNewPassword}
-                onKeyDown={focusOnEnter}
-                type="password"
-              />
-            </div>
-            <div className="inputWrapper">
-              <span>Repeat new password</span>
-              <input
-                value={newPasswordConfirm}
-                id="repeatNewPassword"
-                type="password"
-                onKeyDown={focusOnEnter}
-                onChange={onChangeNewPasswordConfirm}
-              />
-            </div>
-            <div className="inputWrapper">
-              <span>Current subscription</span>
-              <input
-                value={currentSubscription}
-                id="currentSubscription"
-                readOnly
-              />
-            </div>
-            <div className="inputWrapper">
-              <span>Registered since</span>
-              <input value={registeredSince} id="registeredSince" readOnly />
-            </div>
-            {/*End of inputs*/}
-            <div className="flex w-full flex-col md:flex-row">
-              <div className="mb-4 flex w-full md:mb-0 md:w-auto">
-                <BaseButton
-                  color={1}
-                  onClick={() => navigate("/subscriptions")}
-                >
-                  Join another subscription plan
-                </BaseButton>
+    <>
+      <MainContainer>
+        {/*Navbar*/}
+        <Navbar />
+        {/*Content*/}
+        <PageContent>
+          <div className=" float-left w-full p-4 sm:w-3/5">
+            <FormGrey title="Account" width="w-full">
+              {/*Inputs */}
+              <div className="inputWrapper">
+                <span>E-mail</span>
+                <input
+                  value={email}
+                  id="email"
+                  onChange={onChangeEmail}
+                  onKeyDown={focusOnEnter}
+                />
               </div>
-              <div className="flex flex-grow md:justify-end">
-                <div className="ml-2 md:ml-4">
-                  <BaseButton color={1} onClick={handleSave}>
-                    Save
+              <div className="inputWrapper">
+                <span>New password</span>
+                <input
+                  value={newPassword}
+                  id="newPassword"
+                  onChange={onChangeNewPassword}
+                  onKeyDown={focusOnEnter}
+                  type="password"
+                />
+              </div>
+              <div className="inputWrapper">
+                <span>Repeat new password</span>
+                <input
+                  value={newPasswordConfirm}
+                  id="repeatNewPassword"
+                  type="password"
+                  onKeyDown={focusOnEnter}
+                  onChange={onChangeNewPasswordConfirm}
+                />
+              </div>
+              <div className="inputWrapper">
+                <span>Current subscription</span>
+                <input
+                  value={currentSubscription}
+                  id="currentSubscription"
+                  readOnly
+                />
+              </div>
+              <div className="inputWrapper">
+                <span>Registered since</span>
+                <input value={registeredSince} id="registeredSince" readOnly />
+              </div>
+              {/*End of inputs*/}
+              <div className="flex w-full flex-col md:flex-row">
+                <div className="mb-4 flex w-full md:mb-0 md:w-auto">
+                  <BaseButton
+                    color={1}
+                    onClick={() => navigate("/subscriptions")}
+                  >
+                    Join another subscription plan
                   </BaseButton>
                 </div>
+                <div className="flex flex-grow md:justify-end">
+                  <div className="ml-2 md:ml-4">
+                    <BaseButton color={1} onClick={handleSave}>
+                      Save
+                    </BaseButton>
+                  </div>
+                </div>
               </div>
-            </div>
-          </FormGrey>
-        </div>
-        <div className=" max-h-fit w-full overflow-auto p-4 sm:float-right sm:w-2/5">
-          <FormGrey title="Payments" width="w-full">
-            {
-              // Map payments here
-              Array.from({ length: 80 }, (_, index) => (
-                <PaymentContainer
-                  key={index}
-                  id="1"
-                  date="XX/XX/XXXX"
-                  amount="€8.99"
-                  status="completed"
-                  subscription="Monthly payment"
-                ></PaymentContainer>
-              ))
-            }
-          </FormGrey>
-        </div>
-      </PageContent>
-      {/*Footer*/}
-      <Footer height={5}></Footer>
-    </MainContainer>
+            </FormGrey>
+          </div>
+          <div className=" max-h-fit w-full overflow-auto p-4 sm:float-right sm:w-2/5">
+            <FormGrey title="Payments" width="w-full">
+              {payments.length > 0 ? (
+                payments.map((payment) => {
+                  return (
+                    <PaymentContainer
+                      key={payment.id}
+                      id={payment.id}
+                      date={payment.date}
+                      amount={payment.amount}
+                      status={payment.status}
+                      subscription={payment.subscription.id}
+                    />
+                  );
+                })
+              ) : (
+                <div className="text-center">No payments yet</div>
+              )}
+            </FormGrey>
+          </div>
+        </PageContent>
+        {/*Footer*/}
+        <Footer height={5}></Footer>
+      </MainContainer>
+      <PopupContainer display={locked}>
+        <FormGrey title="Account" width="w-1/2"></FormGrey>
+      </PopupContainer>
+    </>
   );
 };
 

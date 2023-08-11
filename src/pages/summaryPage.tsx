@@ -6,6 +6,7 @@ import SmallContainer from "@/components/misc/smallContainer";
 import { BsFullscreen, BsFullscreenExit } from "react-icons/bs";
 import MarkdownRenderer from "@/components/misc/markdownRenderer";
 import { useState } from "react";
+import PopupContainer from "@/components/pageLayout/popupContainer";
 
 const SummaryPage = () => {
   const markdown = `
@@ -119,12 +120,7 @@ You can display code snippets in-line or in blocks.
         {/*Footer*/}
         <Footer height={1}></Footer>
       </MainContainer>
-      <div
-        className={
-          "bottom-0 left-0 z-10 h-screen w-screen overflow-y-auto bg-black bg-opacity-20 p-1 sm:p-5 " +
-          (display ? "absolute" : "hidden")
-        }
-      >
+      <PopupContainer display={display}>
         <div className="animated-inactive mx-auto flex w-full flex-col rounded-md bg-white p-3 text-black opacity-100 sm:w-10/12 ">
           <div className="flex w-full items-center rounded-md">
             <div className="flex-grow"></div>
@@ -139,7 +135,7 @@ You can display code snippets in-line or in blocks.
             {markdownElement}
           </div>
         </div>
-      </div>
+      </PopupContainer>
     </>
   );
 };

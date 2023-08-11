@@ -15,7 +15,6 @@ const HomePage = () => {
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   // TODO: handle loading and error
-
   useEffect(() => {
     const fetchSummaries = async () => {
       // Parse summaries
@@ -25,7 +24,7 @@ const HomePage = () => {
         setError(true);
         setErrorMessage(response.message);
       } else {
-        setSummaries(response.data.data);
+        setSummaries(response.data);
       }
       setLoading(false);
     };
@@ -51,14 +50,14 @@ const HomePage = () => {
           <div className="mt-5 flex flex-wrap bg-white">
             {summaries.length > 0 ? (
               summaries.map(
-                ({ summary_id, title, description, date_created }, index) => {
+                ({ id, title, description, date_created }, index) => {
                   return (
                     <SummaryButton
                       key={index}
                       date={new Date(date_created)}
                       title={title}
                       description={description}
-                      onClick={() => navigate(`/summary/${summary_id}`)}
+                      onClick={() => navigate(`/summary/${id}`)}
                     />
                   );
                 }
