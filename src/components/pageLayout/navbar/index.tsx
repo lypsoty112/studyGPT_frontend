@@ -5,6 +5,18 @@ import { useNavigate } from "react-router-dom";
 import { loggedIn } from "@/components/auth/loginFunctions";
 
 const Navbar = () => {
+  const currentPath = window.location.pathname;
+  let aboutButtonData = {
+    displayText: "About",
+    onClick: () => navigate("/about"),
+  };
+  if (currentPath === "/about") {
+    aboutButtonData = {
+      displayText: "Pricing",
+      onClick: () => navigate("/subscriptions"),
+    };
+  }
+
   const navigate = useNavigate();
 
   const handleLogoClick = () => {
@@ -26,8 +38,8 @@ const Navbar = () => {
         </li>
         <li className="mx-4">
           <NavButton
-            displayText="About"
-            onClick={() => navigate("/about")}
+            displayText={aboutButtonData.displayText}
+            onClick={aboutButtonData.onClick}
           ></NavButton>
         </li>
       </ul>

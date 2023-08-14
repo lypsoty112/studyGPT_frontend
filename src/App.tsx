@@ -8,6 +8,7 @@ import AccountPage from "./pages/accountPage";
 import SubscriptionsPage from "./pages/subscriptionsPage";
 import LoginPage from "./pages/loginPage";
 import SignupPage from "./pages/signupPage";
+import EditPassword from "./pages/editPassword";
 import { ProtectedRoute } from "./components/auth/protectedRoute";
 
 function App() {
@@ -51,6 +52,15 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/editPassword"
+          element={
+            <ProtectedRoute>
+              <EditPassword />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="*">"404 Not Found"</Route>
       </Routes>
     </BrowserRouter>
   );

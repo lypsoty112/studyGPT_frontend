@@ -17,8 +17,6 @@ const AccountPage = () => {
   const [email, setEmail] = useState("");
   const [currentSubscription, setCurrentSubscription] = useState("");
   const [registeredSince, setRegisteredSince] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [newPasswordConfirm, setNewPasswordConfirm] = useState("");
   const [payments, setPayments] = useState<any[]>([]);
   const [locked, setLocked] = useState(false);
 
@@ -70,87 +68,6 @@ const AccountPage = () => {
     setUserInfo();
     setPaymentsInfo();
   }, []);
-
-  useEffect(() => {
-    if (!error) return;
-    console.log(errorMessage);
-    setError(false);
-    setErrorMessage("");
-  }, [error]);
-
-  // ------------------ Functions ------------------
-  // On change email
-  const onChangeEmail = (e: any) => {
-    setEmail(locked ? email : e.target.value);
-  };
-
-  // On change new password
-  const onChangeNewPassword = (e: any) => {
-    setNewPassword(locked ? newPassword : e.target.value);
-  };
-
-  // On change new password confirm
-  const onChangeNewPasswordConfirm = (e: any) => {
-    setNewPasswordConfirm(locked ? newPasswordConfirm : e.target.value);
-  };
-
-  // Focus on the next input on enter
-  const focusOnEnter = async (e: any) => {
-    if (e.key === "Enter") {
-      // Get the id of the current input
-      const currentId = e.target.id;
-      // Create a switch statement to focus on the next input
-      switch (currentId) {
-        case "email":
-          document.getElementById("newPassword")?.focus();
-          break;
-        case "newPassword":
-          document.getElementById("repeatNewPassword")?.focus();
-          break;
-
-        case "repeatNewPassword":
-          await handleSave();
-          break;
-      }
-    }
-  };
-  // On click save
-  const handleSave = () => {
-    // Check if the values are valid
-    setEmail(email.trim());
-    setNewPassword(newPassword.trim());
-    setNewPasswordConfirm(newPasswordConfirm.trim());
-    if (email === "") {
-      // Set the error message
-      setErrorMessage("Please enter an email");
-      // Set the error state
-      setError(true);
-      return;
-    }
-
-    if (newPassword === "" || newPasswordConfirm === "") {
-      // Set the error message
-      setErrorMessage("Please enter a password");
-      // Set the error state
-      setError(true);
-      return;
-    }
-
-    if (newPassword !== newPasswordConfirm) {
-      // Set the error message
-      setErrorMessage("Passwords do not match");
-      // Set the error state
-      setError(true);
-      return;
-    }
-
-    // TODO: Save the changes
-    setLocked(true);
-    // Call the password confirm
-  };
-
-  // TODO: Add the payments
-
   return (
     <>
       <MainContainer>
@@ -163,32 +80,7 @@ const AccountPage = () => {
               {/*Inputs */}
               <div className="inputWrapper">
                 <span>E-mail</span>
-                <input
-                  value={email}
-                  id="email"
-                  onChange={onChangeEmail}
-                  onKeyDown={focusOnEnter}
-                />
-              </div>
-              <div className="inputWrapper">
-                <span>New password</span>
-                <input
-                  value={newPassword}
-                  id="newPassword"
-                  onChange={onChangeNewPassword}
-                  onKeyDown={focusOnEnter}
-                  type="password"
-                />
-              </div>
-              <div className="inputWrapper">
-                <span>Repeat new password</span>
-                <input
-                  value={newPasswordConfirm}
-                  id="repeatNewPassword"
-                  type="password"
-                  onKeyDown={focusOnEnter}
-                  onChange={onChangeNewPasswordConfirm}
-                />
+                <input value={email} id="email" readOnly />
               </div>
               <div className="inputWrapper">
                 <span>Current subscription</span>
@@ -214,8 +106,11 @@ const AccountPage = () => {
                 </div>
                 <div className="flex flex-grow md:justify-end">
                   <div className="ml-2 md:ml-4">
-                    <BaseButton color={1} onClick={handleSave}>
-                      Save
+                    <BaseButton
+                      color={1}
+                      onClick={() => navigate("/editPassword")}
+                    >
+                      Change password
                     </BaseButton>
                   </div>
                 </div>

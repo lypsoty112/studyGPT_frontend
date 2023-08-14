@@ -118,4 +118,49 @@ const checkPassword = async (password: string) => {
 const getUserInformation = async () => {
   return await apiRequest("GET", `${BASE}/me`, {}, true);
 };
-export { register, login, getUserInformation, checkPassword };
+
+const editPassword = async (
+  newPassword: string,
+  newPasswordConfirm: string,
+  currentPassword: string
+) => {
+  // Returns: { status: number, message: string }
+  const inputs = {
+    newPassword: newPassword.trim(),
+    newPasswordConfirm: newPasswordConfirm.trim(),
+    currentPassword: currentPassword.trim(),
+  };
+
+  // Check for empty fields
+  if (
+    !inputs.newPassword ||
+    !inputs.newPasswordConfirm ||
+    !inputs.currentPassword
+  )
+    return { status: 400, message: "Please fill in all fields." };
+
+  // Check for matching passwords
+  if (inputs.newPassword !== inputs.newPasswordConfirm)
+    return { status: 400, message: "Passwords do not match." };
+
+  // Check for valid password length
+  if (inputs.newPassword.length < 8)
+    return { status: 400, message: "Password must be at least 8 characters." };
+
+  // Check for valid current password
+  const checkPasswordResponse = await checkPassword(inputs.currentPassword);
+  if (checkPasswordResponse.status !== 200)
+    return { status: 400, message: "Current password is incorrect." };
+
+  // Perform the request
+  return await apiRequest(
+    "PUT",
+    `${BASE}/me`,
+    {
+      password: inputs.newPassword,
+    },
+    true
+  );
+};
+
+export { register, login, getUserInformation, checkPassword, editPassword };
