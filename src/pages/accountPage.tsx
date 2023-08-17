@@ -36,7 +36,6 @@ const AccountPage = () => {
   const setPaymentsInfo = async () => {
     const response = await getUserPayments();
     if (response.status === 200) {
-      console.log(response.data);
       setPayments(response.data);
     } else {
       // Set the error message

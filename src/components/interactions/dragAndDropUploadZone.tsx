@@ -1,6 +1,12 @@
 import React, { useCallback, useState, useRef } from "react";
 
-const DragAndDropUploadZone: React.FC = () => {
+type DragAndDropUploadZoneProps = {
+  onFileUpload: (file: File) => void;
+};
+
+const DragAndDropUploadZone = ({
+  onFileUpload,
+}: DragAndDropUploadZoneProps) => {
   const [isDragging, setIsDragging] = useState(false);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -34,7 +40,6 @@ const DragAndDropUploadZone: React.FC = () => {
 
     const files = event.dataTransfer.files;
     // Handle dropped files here (e.g., upload or process them)
-    console.log(files);
     if (files.length > 0) {
       setUploadedFile(files[0]);
     }
@@ -50,9 +55,9 @@ const DragAndDropUploadZone: React.FC = () => {
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const files = event.target.files;
       // Handle selected files here (e.g., upload or process them)
-      console.log(files);
       if (files && files.length > 0) {
         setUploadedFile(files[0]);
+        onFileUpload(files[0]);
       }
     },
     []
@@ -77,8 +82,6 @@ const DragAndDropUploadZone: React.FC = () => {
         <div>
           <p>Uploaded File:</p>
           <p>{uploadedFile.name}</p>
-          <p>Size: {uploadedFile.size} bytes</p>
-          <p>Type: {uploadedFile.type}</p>
         </div>
       ) : isDragging ? (
         <p>Drop the files here</p>

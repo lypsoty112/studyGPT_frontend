@@ -37,7 +37,7 @@ function App() {
           }
         />
         <Route
-          path="/summary"
+          path="/summary/:id"
           element={
             <ProtectedRoute>
               <SummaryPage />
