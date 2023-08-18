@@ -26,7 +26,6 @@ const SummaryPage = () => {
     const id = window.location.pathname.split("/")[2];
     // Fetch the data from the API
     const response = await getSummary(id);
-    console.log(response);
     if (response.status === 200) {
       // Set the data
       setMarkdown(response.data.content);
@@ -42,10 +41,13 @@ const SummaryPage = () => {
         return `${day}/${month}/${year} ${hours}:${minutes}`;
       };
       setDateCreated(formatDate(new Date(response.data.date_created)));
+      // Set the title
+      document.title = `StudyGPT - ${response.data.title}`;
     }
   };
 
   useEffect(() => {
+    document.title = "StudyGPT - Summary";
     fetchData();
   }, []);
 

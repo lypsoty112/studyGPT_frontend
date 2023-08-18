@@ -64,6 +64,7 @@ const AccountPage = () => {
   };
 
   useEffect(() => {
+    document.title = "StudyGPT - Account";
     setUserInfo();
     setPaymentsInfo();
   }, []);

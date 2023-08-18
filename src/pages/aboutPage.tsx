@@ -3,8 +3,13 @@ import MainContainer from "@/components/pageLayout/mainContainer";
 import Navbar from "@/components/pageLayout/navbar";
 import PageContent from "@/components/pageLayout/pageContent";
 import TextContainer from "@/components/pageLayout/textContainer";
+import { useEffect } from "react";
 
 const AboutPage = () => {
+  useEffect(() => {
+    document.title = "StudyGPT - About";
+  }, []);
+
   return (
     <MainContainer>
       {/*Navbar*/}

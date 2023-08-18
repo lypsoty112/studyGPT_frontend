@@ -172,6 +172,7 @@ const NewPage = () => {
   };
 
   useEffect(() => {
+    document.title = "StudyGPT - New summary";
     fetchParameters();
   }, []);
 

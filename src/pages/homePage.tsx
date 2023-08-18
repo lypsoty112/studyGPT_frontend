@@ -16,6 +16,7 @@ const HomePage = () => {
   const [errorMessage, setErrorMessage] = useState("");
   // TODO: handle loading and error
   useEffect(() => {
+    document.title = "StudyGPT - Home";
     const fetchSummaries = async () => {
       // Parse summaries
       setLoading(true);

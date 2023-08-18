@@ -4,7 +4,7 @@ import Navbar from "@/components/pageLayout/navbar";
 import PageContent from "@/components/pageLayout/pageContent";
 import FormGrey from "@/components/misc/formGrey";
 import BaseButton from "@/components/interactions/baseButton";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { nextInputOnEnter } from "@/components/interactions/nextInputOnEnter";
 import { editPassword } from "@/api/user";
 import { useNavigate } from "react-router-dom";
@@ -47,6 +47,10 @@ const EditPassword = () => {
   const handleCurrentPasswordChange = (e: any) => {
     setCurrentPassword(e.target.value);
   };
+
+  useEffect(() => {
+    document.title = "StudyGPT - Edit password";
+  }, []);
 
   return (
     <MainContainer>

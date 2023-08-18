@@ -19,6 +19,7 @@ const loginPage = () => {
 
   // useEffect(() => {
   useEffect(() => {
+    document.title = "StudyGPT - Log in";
     redirectIfLoggedIn(navigate);
   }, []);
 

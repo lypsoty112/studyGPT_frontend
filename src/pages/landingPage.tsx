@@ -5,9 +5,14 @@ import PageContent from "@/components/pageLayout/pageContent";
 import AttentionDiv from "@/components/misc/attentionDiv";
 import BaseButton from "@/components/interactions/baseButton";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const LandingPage = () => {
   const navigate = useNavigate();
+  useEffect(() => {
+    document.title = "StudyGPT";
+  }, []);
+
   return (
     <MainContainer>
       {/*Navbar*/}

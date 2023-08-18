@@ -94,6 +94,7 @@ const SubscriptionsPage = () => {
   };
 
   useEffect(() => {
+    document.title = "StudyGPT - Subscriptions";
     loadSubscriptions();
   }, []);
 

@@ -21,6 +21,7 @@ const SignupPage = () => {
 
   // useEffect(() => {
   useEffect(() => {
+    document.title = "StudyGPT - Sign up";
     redirectIfLoggedIn(navigate);
   }, []);
   // Messaging
