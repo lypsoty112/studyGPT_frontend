@@ -2,13 +2,13 @@ import MainContainer from "@/components/pageLayout/mainContainer";
 import Navbar from "@/components/pageLayout/navbar";
 import BigContainer from "@/components/pageLayout/bigContainer";
 import DragAndDropUploadZone from "@/components/interactions/dragAndDropUploadZone";
-import FormGreen from "@/components/misc/formGreen";
 import BaseButton from "@/components/interactions/baseButton";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useContext } from "react";
 import { getParameters } from "@/api/parameter";
 import { newSummary } from "@/api/summary";
 import { ErrorContext } from "@/components/pageLayout/error";
+import Form from "@/components/misc/form";
 
 type ParameterClassProps = {
   elements: any[];
@@ -67,6 +67,8 @@ const NewPage = () => {
   const [parameters, setParameters] = useState<{ [key: string]: any[] }>({});
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
+  const [loadingParameters, setLoadingParameters] = useState<boolean>(true);
+  const [loadingUpload, setLoadingUpload] = useState<boolean>(false);
   // Set 1 file to upload
 
   const { setError, setErrorMessage, setLevel } = useContext(ErrorContext);
@@ -80,6 +82,7 @@ const NewPage = () => {
   };
   // Load the parameters
   const fetchParameters = async () => {
+    setLoadingParameters(true);
     const response = await getParameters();
 
     if (response.status === 200) {
@@ -102,6 +105,7 @@ const NewPage = () => {
       setError(true);
       setLevel(0);
     }
+    setLoadingParameters(false);
   };
 
   const findCheckedParameters = () => {
@@ -149,6 +153,7 @@ const NewPage = () => {
     // Compile the data into 1 object
     // Send the data to the server
     // TODO: Add loading animation
+    setLoadingUpload(true);
     const response = await newSummary(
       {
         title,
@@ -168,6 +173,7 @@ const NewPage = () => {
       setError(true);
       setLevel(1);
     }
+    setLoadingUpload(false);
   };
 
   useEffect(() => {
@@ -185,8 +191,13 @@ const NewPage = () => {
           <div className="float-left h-full w-1/3 flex-col p-3">
             <DragAndDropUploadZone onFileUpload={handleFileUpload} />
           </div>
-          <div className="float-right h-full w-2/3 p-3">
-            <FormGreen title="Information" extraClass="">
+          <div className="float-right h-full w-2/3 p-5">
+            <Form
+              title="Information"
+              width=" w-full "
+              loading={loadingParameters}
+              color={1}
+            >
               <div className="inputWrapper">
                 <span>Title</span>
                 <input
@@ -212,11 +223,15 @@ const NewPage = () => {
                 })
               }
               <div className="w-full">
-                <BaseButton color={0} onClick={handleSubmit}>
+                <BaseButton
+                  color={0}
+                  onClick={handleSubmit}
+                  loading={loadingUpload}
+                >
                   New summary
                 </BaseButton>
               </div>
-            </FormGreen>
+            </Form>
           </div>
         </div>
       </BigContainer>

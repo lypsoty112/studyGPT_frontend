@@ -16,6 +16,7 @@ const SummaryPage = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [dateCreated, setDateCreated] = useState("");
+  const [loading, setLoading] = useState(false); // Loading state
 
   let markdownElement = (
     <MarkdownRenderer markdown={markdown}></MarkdownRenderer>
@@ -26,6 +27,7 @@ const SummaryPage = () => {
   // TODO: Add error handling & loading state
   const fetchData = async () => {
     // Get the id from the url
+    setLoading(true);
     const id = window.location.pathname.split("/")[2];
     // Fetch the data from the API
     const response = await getSummary(id);
@@ -52,6 +54,7 @@ const SummaryPage = () => {
       setError(true);
       setLevel(0);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -70,7 +73,12 @@ const SummaryPage = () => {
             <SmallContainer title={title} extraClass="mb-5">
               <div className="text-sm italic">{dateCreated}</div>
             </SmallContainer>
-            <SmallContainer title="Description">{description}</SmallContainer>
+            <SmallContainer title="Description" extraClass="mb-5">
+              {description}
+            </SmallContainer>
+            <SmallContainer title="Feedback">
+              Feedback, questions or suggestions on this summary? Write here
+            </SmallContainer>
           </div>
           <div className="float-right h-full w-full p-0 pb-0 sm:w-9/12 sm:p-3">
             <div

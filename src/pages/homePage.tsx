@@ -8,13 +8,20 @@ import { useEffect } from "react";
 import { getSummariesForHome } from "@/api/summary";
 import { useState, useContext } from "react";
 import { ErrorContext } from "@/components/pageLayout/error";
+import { BeatLoader } from "react-spinners";
 
 const HomePage = () => {
   const navigate = useNavigate();
   const [summaries, setSummaries] = useState([]);
   const [loading, setLoading] = useState(true);
-  // TODO: handle loading and error
   const { setError, setErrorMessage, setLevel } = useContext(ErrorContext);
+
+  const loadingDiv = (
+    <div className="mt-5 flex w-full items-center justify-center">
+      <BeatLoader color={"#00B300"} loading={loading} />
+    </div>
+  );
+
   useEffect(() => {
     document.title = "StudyGPT - Home";
 
@@ -52,7 +59,9 @@ const HomePage = () => {
           </div>
           {/*Summaries*/}
           <div className="mt-5 flex flex-wrap bg-white">
-            {summaries.length > 0 ? (
+            {loading ? (
+              loadingDiv
+            ) : summaries.length > 0 ? (
               summaries.map(
                 ({ id, title, description, date_created }, index) => {
                   return (

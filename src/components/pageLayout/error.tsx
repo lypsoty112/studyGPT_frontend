@@ -65,9 +65,7 @@ const ErrorProvider = ({ children }: ErrorContextProps) => {
               onClick={() => setError(false)}
             />
           </div>
-          <div className={errorLevels[level] + " rounded-md pl-2 "}>
-            {errorMessage}
-          </div>
+          <div className={errorLevels[level] + " pl-4 "}>{errorMessage}</div>
         </div>
       </div>
     </ErrorContext.Provider>

@@ -2,7 +2,7 @@ import Footer from "@/components/pageLayout/footer";
 import MainContainer from "@/components/pageLayout/mainContainer";
 import Navbar from "@/components/pageLayout/navbar";
 import PageContent from "@/components/pageLayout/pageContent";
-import FormGrey from "@/components/misc/formGrey";
+import Form from "@/components/misc/form";
 import BaseButton from "@/components/interactions/baseButton";
 import { useState, useEffect, useContext } from "react";
 import { login } from "@/api/user"; // Assuming the API function for logging in exists
@@ -14,6 +14,8 @@ const loginPage = () => {
   // Constants
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false); // Loading state
+
   const navigate = useNavigate();
   const { setError, setErrorMessage, setLevel } = useContext(ErrorContext);
   // useEffect(() => {
@@ -49,6 +51,7 @@ const loginPage = () => {
 
   // Handle submit
   const handleSubmit = async () => {
+    setLoading(true);
     const response = await login(email, password); // Assuming the API function for logging in exists
     // Anything other than 200 is an error
     if (response.status !== 200) {
@@ -58,6 +61,7 @@ const loginPage = () => {
       setLevel(0);
       return;
     }
+    setLoading(false);
     navigate("/home");
   };
 
@@ -67,7 +71,7 @@ const loginPage = () => {
       <Navbar />
       {/*Content*/}
       <PageContent>
-        <FormGrey title="Log in">
+        <Form title="Log in">
           <div className="inputWrapper">
             <span>E-mail</span>
             <input
@@ -87,10 +91,10 @@ const loginPage = () => {
               onKeyDown={focusOnEnter}
             />
           </div>
-          <BaseButton color={1} onClick={handleSubmit}>
+          <BaseButton color={1} onClick={handleSubmit} loading={loading}>
             Sign in
           </BaseButton>
-        </FormGrey>
+        </Form>
       </PageContent>
       {/*Footer*/}
       <Footer height={5}></Footer>

@@ -2,7 +2,7 @@ import Footer from "@/components/pageLayout/footer";
 import MainContainer from "@/components/pageLayout/mainContainer";
 import Navbar from "@/components/pageLayout/navbar";
 import PageContent from "@/components/pageLayout/pageContent";
-import FormGrey from "@/components/misc/formGrey";
+import Form from "@/components/misc/form";
 import BaseButton from "@/components/interactions/baseButton";
 import { useState, useEffect, useContext } from "react";
 import { ErrorContext } from "@/components/pageLayout/error";
@@ -15,8 +15,11 @@ const EditPassword = () => {
   const [currentPassword, setCurrentPassword] = useState("");
   const navigate = useNavigate();
   const { setError, setErrorMessage, setLevel } = useContext(ErrorContext);
+  const [loading, setLoading] = useState(false);
 
   const handleChangePassword = async () => {
+    setLoading(true);
+
     let response = await editPassword(
       newPassword,
       newPasswordConfirm,
@@ -25,11 +28,11 @@ const EditPassword = () => {
     if (response.status === 200) {
       navigate("/account");
     } else {
-      // TODO: handle error
       setErrorMessage(response.message);
       setError(true);
       setLevel(0);
     }
+    setLoading(false);
   };
 
   const focusOnEnter = (e: any) => {
@@ -62,7 +65,7 @@ const EditPassword = () => {
       <Navbar />
       {/*Content*/}
       <PageContent>
-        <FormGrey title="Change password">
+        <Form title="Change password">
           <div className="inputWrapper">
             <span>New password</span>
             <input
@@ -91,10 +94,14 @@ const EditPassword = () => {
               onChange={handleCurrentPasswordChange}
             />
           </div>
-          <BaseButton color={1} onClick={handleChangePassword}>
+          <BaseButton
+            color={1}
+            onClick={handleChangePassword}
+            loading={loading}
+          >
             Edit password
           </BaseButton>
-        </FormGrey>
+        </Form>
       </PageContent>
       {/*Footer*/}
       <Footer height={5}></Footer>

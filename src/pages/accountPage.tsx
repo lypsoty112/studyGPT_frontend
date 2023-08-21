@@ -2,7 +2,7 @@ import MainContainer from "@/components/pageLayout/mainContainer";
 import Navbar from "@/components/pageLayout/navbar";
 import PageContent from "@/components/pageLayout/pageContent";
 import Footer from "@/components/pageLayout/footer";
-import FormGrey from "@/components/misc/formGrey";
+import Form from "@/components/misc/form";
 import BaseButton from "@/components/interactions/baseButton";
 import PaymentContainer from "@/components/misc/paymentContainer";
 import { useNavigate } from "react-router-dom";
@@ -18,6 +18,8 @@ const AccountPage = () => {
   const [currentSubscription, setCurrentSubscription] = useState("");
   const [registeredSince, setRegisteredSince] = useState("");
   const [payments, setPayments] = useState<any[]>([]);
+  const [loadingPayments, setLoadingPayments] = useState(false);
+  const [loadingInfo, setLoadingInfo] = useState(false);
 
   const formatDate = (date: Date) => {
     const day = date.getDay();
@@ -30,6 +32,7 @@ const AccountPage = () => {
   const { setError, setErrorMessage, setLevel } = useContext(ErrorContext);
 
   const setPaymentsInfo = async () => {
+    setLoadingPayments(true);
     const response = await getUserPayments();
     if (response.status === 200) {
       setPayments(response.data);
@@ -39,9 +42,11 @@ const AccountPage = () => {
       setError(true);
       setLevel(0);
     }
+    setLoadingPayments(false);
   };
 
   const setUserInfo = async () => {
+    setLoadingInfo(true);
     const response = await getUserInformation();
     // Check if the response is valid
     if (response.status === 200) {
@@ -57,6 +62,7 @@ const AccountPage = () => {
       setError(true);
       setLevel(0);
     }
+    setLoadingInfo(false);
   };
 
   useEffect(() => {
@@ -72,7 +78,7 @@ const AccountPage = () => {
         {/*Content*/}
         <PageContent>
           <div className=" float-left w-full p-4 sm:w-3/5">
-            <FormGrey title="Account" width="w-full">
+            <Form title="Account" width="w-full" loading={loadingInfo}>
               {/*Inputs */}
               <div className="inputWrapper">
                 <span>E-mail</span>
@@ -111,10 +117,10 @@ const AccountPage = () => {
                   </div>
                 </div>
               </div>
-            </FormGrey>
+            </Form>
           </div>
           <div className=" max-h-fit w-full overflow-auto p-4 sm:float-right sm:w-2/5">
-            <FormGrey title="Payments" width="w-full">
+            <Form title="Payments" width="w-full" loading={loadingPayments}>
               {payments.length > 0 ? (
                 payments.map((payment) => {
                   return (
@@ -131,7 +137,7 @@ const AccountPage = () => {
               ) : (
                 <div className="text-center">No payments yet</div>
               )}
-            </FormGrey>
+            </Form>
           </div>
         </PageContent>
         {/*Footer*/}

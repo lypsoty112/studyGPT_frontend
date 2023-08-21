@@ -3,7 +3,7 @@ import MainContainer from "@/components/pageLayout/mainContainer";
 import Navbar from "@/components/pageLayout/navbar";
 import PageContent from "@/components/pageLayout/pageContent";
 import BaseButton from "@/components/interactions/baseButton";
-import FormGrey from "@/components/misc/formGrey";
+import Form from "@/components/misc/form";
 import { useState, useEffect, useContext } from "react";
 import { register } from "@/api/user";
 import { useNavigate } from "react-router-dom";
@@ -36,12 +36,6 @@ const SignupPage = () => {
     setPasswordConfirm(e.target.value);
   };
 
-  const startLoading = () => {
-    setLoading(true);
-  };
-  const stopLoading = () => {
-    setLoading(false);
-  };
   // Focus on the next input on enter
   const focusOnEnter = async (e: any) => {
     if (e.key === "Enter") {
@@ -65,9 +59,8 @@ const SignupPage = () => {
   // Handle submit
   const handleSubmit = async () => {
     if (loading) return;
-    startLoading();
+    setLoading(true);
     const response = await register(email, password, passwordConfirm);
-    stopLoading();
     // Anything other than 200 is an error
     if (response.status !== 200) {
       // Set the error message
@@ -79,6 +72,7 @@ const SignupPage = () => {
     }
 
     // If the response is 200, move to the next page
+    setLoading(false);
     navigate("/home");
   };
   return (
@@ -87,7 +81,7 @@ const SignupPage = () => {
       <Navbar />
       {/*Content*/}
       <PageContent>
-        <FormGrey title="Sign up">
+        <Form title="Sign up">
           <div className="inputWrapper">
             <span>E-mail</span>
             <input
@@ -120,13 +114,14 @@ const SignupPage = () => {
           <BaseButton
             color={1}
             onClick={handleSubmit}
+            loading={loading}
             args={{
               id: "submit",
             }}
           >
             Sign in
           </BaseButton>
-        </FormGrey>
+        </Form>
       </PageContent>
       {/*Footer*/}
       <Footer height={5}></Footer>
