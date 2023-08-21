@@ -6,24 +6,27 @@ import Navbar from "@/components/pageLayout/navbar";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { getSummariesForHome } from "@/api/summary";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { ErrorContext } from "@/components/pageLayout/error";
 
 const HomePage = () => {
   const navigate = useNavigate();
   const [summaries, setSummaries] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
   // TODO: handle loading and error
+  const { setError, setErrorMessage, setLevel } = useContext(ErrorContext);
   useEffect(() => {
     document.title = "StudyGPT - Home";
+
     const fetchSummaries = async () => {
       // Parse summaries
       setLoading(true);
       let response = await getSummariesForHome();
       if (response.status !== 200) {
-        setError(true);
+        // Set the error message
         setErrorMessage(response.message);
+        setError(true);
+        setLevel(0);
       } else {
         setSummaries(response.data);
       }

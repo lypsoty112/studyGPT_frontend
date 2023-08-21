@@ -4,11 +4,11 @@ import PageContent from "@/components/pageLayout/pageContent";
 import Footer from "@/components/pageLayout/footer";
 import FormGrey from "@/components/misc/formGrey";
 import BaseButton from "@/components/interactions/baseButton";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { getSubscriptions } from "@/api/subscription";
 import { loggedIn } from "@/components/auth/loginFunctions";
 import { getUserInformation } from "@/api/user";
+import { ErrorContext } from "@/components/pageLayout/error";
 
 type SubscriptionBoxProps = {
   id: number;
@@ -62,9 +62,7 @@ const SubscriptionsPage = () => {
   const [subscriptions, setSubscriptions] = useState<any[]>([]);
   const [currentSubscription, setCurrentSubscription] = useState(-1);
 
-  // TODO: Error handling
-  const [error, setError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const { setError, setErrorMessage, setLevel } = useContext(ErrorContext);
 
   const loadSubscriptions = async () => {
     // Check if user is logged in
@@ -81,6 +79,7 @@ const SubscriptionsPage = () => {
           "Failed to load current subscription: " +
             currentSubscriptionResponse.data
         );
+        setLevel(0);
       }
     }
 
@@ -90,6 +89,7 @@ const SubscriptionsPage = () => {
     } else {
       setError(true);
       setErrorMessage("Failed to load subscriptions: " + response.data);
+      setLevel(0);
     }
   };
 

@@ -6,11 +6,11 @@ import FormGrey from "@/components/misc/formGrey";
 import BaseButton from "@/components/interactions/baseButton";
 import PaymentContainer from "@/components/misc/paymentContainer";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { getUserInformation } from "@/api/user";
 import { useEffect } from "react";
 import { getUserPayments } from "@/api/payment";
-import PopupContainer from "@/components/pageLayout/popupContainer";
+import { ErrorContext } from "@/components/pageLayout/error";
 
 const AccountPage = () => {
   const navigate = useNavigate();
@@ -18,7 +18,6 @@ const AccountPage = () => {
   const [currentSubscription, setCurrentSubscription] = useState("");
   const [registeredSince, setRegisteredSince] = useState("");
   const [payments, setPayments] = useState<any[]>([]);
-  const [locked, setLocked] = useState(false);
 
   const formatDate = (date: Date) => {
     const day = date.getDay();
@@ -28,10 +27,7 @@ const AccountPage = () => {
     const minutes = date.getMinutes();
     return `${day}/${month}/${year} ${hours}:${minutes}`;
   };
-
-  // TODO: handle error
-  const [error, setError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const { setError, setErrorMessage, setLevel } = useContext(ErrorContext);
 
   const setPaymentsInfo = async () => {
     const response = await getUserPayments();
@@ -40,8 +36,8 @@ const AccountPage = () => {
     } else {
       // Set the error message
       setErrorMessage(response.message);
-      // Set the error state
       setError(true);
+      setLevel(0);
     }
   };
 
@@ -58,8 +54,8 @@ const AccountPage = () => {
     } else {
       // Set the error message
       setErrorMessage(response.data.message);
-      // Set the error state
       setError(true);
+      setLevel(0);
     }
   };
 
@@ -141,9 +137,6 @@ const AccountPage = () => {
         {/*Footer*/}
         <Footer height={5}></Footer>
       </MainContainer>
-      <PopupContainer display={locked}>
-        <FormGrey title="Account" width="w-1/2"></FormGrey>
-      </PopupContainer>
     </>
   );
 };

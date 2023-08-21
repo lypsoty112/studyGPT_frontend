@@ -4,7 +4,8 @@ import Navbar from "@/components/pageLayout/navbar";
 import PageContent from "@/components/pageLayout/pageContent";
 import FormGrey from "@/components/misc/formGrey";
 import BaseButton from "@/components/interactions/baseButton";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { ErrorContext } from "@/components/pageLayout/error";
 import { nextInputOnEnter } from "@/components/interactions/nextInputOnEnter";
 import { editPassword } from "@/api/user";
 import { useNavigate } from "react-router-dom";
@@ -13,6 +14,7 @@ const EditPassword = () => {
   const [newPasswordConfirm, setNewPasswordConfirm] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
   const navigate = useNavigate();
+  const { setError, setErrorMessage, setLevel } = useContext(ErrorContext);
 
   const handleChangePassword = async () => {
     let response = await editPassword(
@@ -24,7 +26,9 @@ const EditPassword = () => {
       navigate("/account");
     } else {
       // TODO: handle error
-      alert("Password change failed: " + response.message);
+      setErrorMessage(response.message);
+      setError(true);
+      setLevel(0);
     }
   };
 

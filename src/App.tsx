@@ -10,58 +10,61 @@ import LoginPage from "./pages/loginPage";
 import SignupPage from "./pages/signupPage";
 import EditPassword from "./pages/editPassword";
 import { ProtectedRoute } from "./components/auth/protectedRoute";
+import Error from "./components/pageLayout/error";
 
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/subscriptions" element={<SubscriptionsPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignupPage />} />
-        <Route
-          path="/home"
-          element={
-            <ProtectedRoute>
-              <HomePage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/new"
-          element={
-            <ProtectedRoute>
-              <NewPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/summary/:id"
-          element={
-            <ProtectedRoute>
-              <SummaryPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/account"
-          element={
-            <ProtectedRoute>
-              <AccountPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/editPassword"
-          element={
-            <ProtectedRoute>
-              <EditPassword />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="*">"404 Not Found"</Route>
-      </Routes>
+      <Error>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/subscriptions" element={<SubscriptionsPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route
+            path="/home"
+            element={
+              <ProtectedRoute>
+                <HomePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/new"
+            element={
+              <ProtectedRoute>
+                <NewPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/summary/:id"
+            element={
+              <ProtectedRoute>
+                <SummaryPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/account"
+            element={
+              <ProtectedRoute>
+                <AccountPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/editPassword"
+            element={
+              <ProtectedRoute>
+                <EditPassword />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="*">"404 Not Found"</Route>
+        </Routes>
+      </Error>
     </BrowserRouter>
   );
 }

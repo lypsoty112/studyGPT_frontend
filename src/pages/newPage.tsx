@@ -5,9 +5,10 @@ import DragAndDropUploadZone from "@/components/interactions/dragAndDropUploadZo
 import FormGreen from "@/components/misc/formGreen";
 import BaseButton from "@/components/interactions/baseButton";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { getParameters } from "@/api/parameter";
 import { newSummary } from "@/api/summary";
+import { ErrorContext } from "@/components/pageLayout/error";
 
 type ParameterClassProps = {
   elements: any[];
@@ -67,6 +68,9 @@ const NewPage = () => {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   // Set 1 file to upload
+
+  const { setError, setErrorMessage, setLevel } = useContext(ErrorContext);
+
   const [file, setFile] = useState<File | null>(null);
   const handleFileUpload = (file: File) => {
     setFile(file);
@@ -93,13 +97,10 @@ const NewPage = () => {
       );
       setParameters(sortedParameters);
     } else {
-      // TODO: Handle error
-      alert(
-        "Error while loading parameters: " +
-          response.status +
-          " " +
-          response.message
-      );
+      // Set the error message
+      setErrorMessage(response.message);
+      setError(true);
+      setLevel(0);
     }
   };
 
@@ -162,12 +163,10 @@ const NewPage = () => {
       const link = `/summary/${response.data.id}/`;
       navigate(link);
     } else {
-      alert(
-        "Error while creating the summary: " +
-          response.status +
-          " " +
-          response.message
-      );
+      // Set the error message
+      setErrorMessage(response.message);
+      setError(true);
+      setLevel(1);
     }
   };
 

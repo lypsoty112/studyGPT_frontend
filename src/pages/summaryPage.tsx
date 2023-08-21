@@ -5,9 +5,10 @@ import Footer from "@/components/pageLayout/footer";
 import SmallContainer from "@/components/misc/smallContainer";
 import { BsFullscreen, BsFullscreenExit } from "react-icons/bs";
 import MarkdownRenderer from "@/components/misc/markdownRenderer";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import PopupContainer from "@/components/pageLayout/popupContainer";
 import { getSummary } from "@/api/summary";
+import { ErrorContext } from "@/components/pageLayout/error";
 
 const SummaryPage = () => {
   const [display, setDisplay] = useState(false);
@@ -19,6 +20,8 @@ const SummaryPage = () => {
   let markdownElement = (
     <MarkdownRenderer markdown={markdown}></MarkdownRenderer>
   );
+
+  const { setError, setErrorMessage, setLevel } = useContext(ErrorContext);
 
   // TODO: Add error handling & loading state
   const fetchData = async () => {
@@ -43,6 +46,11 @@ const SummaryPage = () => {
       setDateCreated(formatDate(new Date(response.data.date_created)));
       // Set the title
       document.title = `StudyGPT - ${response.data.title}`;
+    } else {
+      // Set the error message
+      setErrorMessage(response.message);
+      setError(true);
+      setLevel(0);
     }
   };
 

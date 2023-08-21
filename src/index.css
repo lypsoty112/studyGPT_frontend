@@ -68,3 +68,8 @@ html {
   @apply py-1;
 }
 @tailwind utilities;
+
+/*-----------------------------------------*/
+/* Error */
+/*-----------------------------------------*/
+/* Add this to your component's stylesheet */
