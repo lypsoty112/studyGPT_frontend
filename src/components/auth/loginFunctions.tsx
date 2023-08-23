@@ -1,3 +1,5 @@
+import { logOut as logOutRequest } from "@/api/user";
+
 const loggedIn = () => {
   // Check if the user is logged in by checking if the token exists
   const token = localStorage.getItem("token");
@@ -7,7 +9,8 @@ const loggedIn = () => {
   return false;
 };
 
-const logOut = () => {
+const logOut = async () => {
+  await logOutRequest();
   localStorage.removeItem("token");
 };
 

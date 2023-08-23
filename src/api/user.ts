@@ -46,7 +46,9 @@ const register = async (
 
   // Perform the request
   try {
-    response = await axios.post(`${BASE}/register`, inputs);
+    response = await axios.post(`${BASE}/register`, inputs, {
+      withCredentials: true,
+    });
     // This returns a token
   } catch (error: any) {
     return {
@@ -80,7 +82,9 @@ const login = async (email: string, password: string) => {
 
   // Perform the request
   try {
-    response = await axios.post(`${BASE}/login`, inputs);
+    response = await axios.post(`${BASE}/login`, inputs, {
+      withCredentials: true,
+    });
     // This returns a token
   } catch (error: any) {
     return {
@@ -88,8 +92,17 @@ const login = async (email: string, password: string) => {
       message: error.response.data.message,
     };
   }
+  // Store the cookie received from the server
+  const cookie = response.headers["set-cookie"];
+
+  // Set the cookie as a default header for subsequent requests
+  axios.defaults.headers.common["Cookie"] = cookie;
   setToken(response.data.token);
   return { status: 200, message: "Success" };
+};
+
+const logOut = async () => {
+  return await apiRequest("POST", `${BASE}/logout`, {}, true, true);
 };
 
 const checkPassword = async (password: string) => {
@@ -163,4 +176,12 @@ const editPassword = async (
   );
 };
 
-export { register, login, getUserInformation, checkPassword, editPassword };
+export {
+  register,
+  login,
+  getUserInformation,
+  checkPassword,
+  editPassword,
+  setToken,
+  logOut,
+};

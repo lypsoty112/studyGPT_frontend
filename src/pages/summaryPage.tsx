@@ -17,14 +17,13 @@ const SummaryPage = () => {
   const [description, setDescription] = useState("");
   const [dateCreated, setDateCreated] = useState("");
   const [loading, setLoading] = useState(false); // Loading state
-
+  const supportEmail = import.meta.env.VITE_APP_SUPPORT_MAIL || "";
   let markdownElement = (
     <MarkdownRenderer markdown={markdown}></MarkdownRenderer>
   );
 
   const { setError, setErrorMessage, setLevel } = useContext(ErrorContext);
 
-  // TODO: Add error handling & loading state
   const fetchData = async () => {
     // Get the id from the url
     setLoading(true);
@@ -70,14 +69,22 @@ const SummaryPage = () => {
         {/*Content*/}
         <PageContent>
           <div className="float-left hidden h-full w-3/12 p-3 sm:block">
-            <SmallContainer title={title} extraClass="mb-5">
+            <SmallContainer title={title} extraClass="mb-5" loading={loading}>
               <div className="text-sm italic">{dateCreated}</div>
             </SmallContainer>
-            <SmallContainer title="Description" extraClass="mb-5">
+            <SmallContainer
+              title="Description"
+              extraClass="mb-5"
+              loading={loading}
+            >
               {description}
             </SmallContainer>
             <SmallContainer title="Feedback">
-              Feedback, questions or suggestions on this summary? Write here
+              Feedback, questions or suggestions on this summary? Write an
+              e-mail to
+              <a className=" font-semibold" href={`mailto:${supportEmail}`}>
+                {supportEmail}
+              </a>
             </SmallContainer>
           </div>
           <div className="float-right h-full w-full p-0 pb-0 sm:w-9/12 sm:p-3">

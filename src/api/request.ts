@@ -1,17 +1,45 @@
 import { loggedIn } from "@/components/auth/loginFunctions";
+import { setToken } from "./user";
 import axios from "axios";
+const REFRESH_LINK = `${import.meta.env.VITE_APP_API_URL}/user/refresh`;
+
+const refreshTokenWhenExpired = async () => {
+  // Check if the token is expired
+  const token = localStorage.getItem("token");
+  if (!token) return;
+  const tokenParts = JSON.parse(atob(token.split(".")[1]));
+  const tokenExp = tokenParts.exp * 1000;
+  const now = new Date().getTime();
+  const diff = tokenExp - now;
+  // If the token is not expired, return
+  if (diff > 1000) return;
+
+  let response = await axios.request({
+    method: "POST",
+    url: REFRESH_LINK,
+    withCredentials: true,
+  });
+
+  // Set the new token in local storage if it exists
+  if (response.status === 200) {
+    setToken(response.data.token);
+  }
+};
 
 const apiRequest = async (
   method: string,
   url: string,
   data: any,
-  loginRequired: boolean
+  loginRequired: boolean,
+  credentialsRequired: boolean = false
 ) => {
   // Check if user is logged in
-  if (loginRequired && !loggedIn()) {
+  if ((loginRequired || credentialsRequired) && !loggedIn()) {
     return { status: 401, data: [], message: "Unauthorized" };
   }
 
+  // Refresh the token if it is expired
+  if (loginRequired) await refreshTokenWhenExpired();
   // Perform the request
   let response;
   try {
@@ -19,6 +47,7 @@ const apiRequest = async (
       method: method,
       url: url,
       data: data,
+      withCredentials: credentialsRequired,
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
@@ -38,6 +67,9 @@ const apiPostFile = async (url: string, data: any, loginRequired: boolean) => {
   if (loginRequired && !loggedIn()) {
     return { status: 401, data: {}, message: "Unauthorized" };
   }
+
+  // Refresh the token if it is expired
+  if (loginRequired) await refreshTokenWhenExpired();
 
   // Perform the request
   let response;
