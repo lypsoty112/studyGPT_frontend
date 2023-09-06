@@ -1,11 +1,11 @@
 import { apiRequest, apiPostFile } from "@/api/request";
 
 const BASE = `${import.meta.env.VITE_APP_API_URL}/summary`;
-const FILE_TYPES = ["pdf", "doc", "docx", "txt"];
+const FILE_TYPES = ["md", "pdf", "docx", "txt"];
 const MAX_FILE_SIZE = 251658240; // 30MB
 const MIME_TYPES = [
+  "text/markdown",
   "application/pdf",
-  "application/msword",
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
   "text/plain",
 ];

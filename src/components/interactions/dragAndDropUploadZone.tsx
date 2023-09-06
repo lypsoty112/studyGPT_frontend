@@ -9,7 +9,11 @@ const DragAndDropUploadZone = ({
 }: DragAndDropUploadZoneProps) => {
   const [isDragging, setIsDragging] = useState(false);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const supportedFileExtensions = ["pdf", "docx", "txt", "md"];
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const supportedFileExtensionsString =
+    "." + supportedFileExtensions.join(", .");
 
   const handleDragEnter = useCallback(
     (event: React.DragEvent<HTMLDivElement>) => {
@@ -86,7 +90,10 @@ const DragAndDropUploadZone = ({
       ) : isDragging ? (
         <p>Drop the files here</p>
       ) : (
-        <p>Drag and drop files here or click to upload</p>
+        <p>
+          Drag and drop files here or click to upload. <br />
+          Supported file types: {supportedFileExtensionsString}
+        </p>
       )}
     </div>
   );
