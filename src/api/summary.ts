@@ -29,13 +29,11 @@ const newSummary = async (
   file: File | null
 ) => {
   // Returns: { status: number, data: any, message: any}
-
+  console.log(file, file?.size, file?.type, file?.name);
   // Check the file size, type, extension, if it even exists
   if (!file) return { status: 400, message: "No file was uploaded", data: {} };
   if (file.size > MAX_FILE_SIZE)
     return { status: 400, message: "File is too large", data: {} };
-  if (!MIME_TYPES.includes(file.type))
-    return { status: 400, message: "File type is not supported", data: {} };
   if (!FILE_TYPES.includes(file.name.split(".").pop()!))
     return {
       status: 400,
